@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# estabmlishes a connection between my server and my computer
+ssh -i ~/.ssh/school ubuntu@100.25.165.116
