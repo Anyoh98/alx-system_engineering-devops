@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #Install updates
-sudo apt install update
-sudo apt install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 #write a custom HTML file
 echo "Hello World!" | sudo tee /var/www/html/index.html
 
 #configure nginx to use the custom html file
 
-sudo bash -c "echo 'server {
+echo "server {
     listen 80 default_server;
     listen [::]:80 default_server ipv6only=on;
 
@@ -20,7 +20,7 @@ sudo bash -c "echo 'server {
     location / {
         try_files \$uri \$uri/ =404;
     }
-}' > /etc/nginx/sites-available/default"
+}" > | sudo tee /etc/nginx/sites-available/default
 
 # Remove the default symbolic link in sites-enabled
 sudo rm -f /etc/nginx/sites-enabled/default
