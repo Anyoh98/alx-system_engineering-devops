@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#This bash script installs and configures HAproxy 
 # Get the updates
 sudo apt-get -y update
 
