@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Get the updates
+sudo apt-get -y update
+
+# Install HAProxy
+sudo apt-get -y install haproxy
+
+# Configure HAProxy to distribute traffic between both servers
+echo "
+# Default settings
+defaults
+    timeout connect 5s
+    timeout client 30s
+    timeout server 30s
+
+frontend anyoh_frontend
+        bind *:80
+        mode http
+        default_backend web_servers
+        timeout client 30s
+
+backend web_servers
+        balance roundrobin
+        mode http
+        server 405888-web-01 100.25.165.116:80 check
+        server 405888-web-02 100.25.203.71:80 check
+        timeout server 30s
+        timeout connect 5s
+" | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
+
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Testing the HAproxy configuration file
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Enable HAProxy as a service
+sudo systemctl enable haproxy
+
+# Restart HAProxy
+sudo service haproxy restart

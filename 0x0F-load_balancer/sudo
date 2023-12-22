@@ -1,0 +1,22 @@
+
+frontend maisonhesed.tech
+	bind *:80
+	default_backend web_servers
+
+backend web_servers
+	balance roundrobin
+	server 405888-web-01 100.25.165.116
+	server 405888-web-02 100.25.203.71
+	timeout client 30s
+        timeout server 30s
+ tee /etc/haproxy/haproxy.cfg
+
+frontend sammykingx.tech
+        bind 0:80
+        default_backend web_servers
+
+backend web_servers
+        balance roundrobin
+        server 405888-web-01 100.25.165.116
+        server 405888-web-02 100.25.203.71
+ /etc/haproxy/haproxy.cfg
